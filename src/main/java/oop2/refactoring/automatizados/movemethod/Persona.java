@@ -10,4 +10,8 @@ public class Persona {
     public String nombre() {
         return nombre;
     }
+
+    boolean empezasCon(String letra) {
+        return nombre().startsWith(letra);
+    }
 }

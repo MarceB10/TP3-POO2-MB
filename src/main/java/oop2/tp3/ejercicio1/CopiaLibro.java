@@ -10,4 +10,12 @@ public class CopiaLibro {
     public Libro libro() {
         return libro;
     }
+
+    public boolean isNuevoLanzamiento(){
+        return this.libro.soyNuevoLanzamiento();
+    }
+
+    public Double laDeudaCopiaEs(int diasAlquilado){
+        return this.libro.calcularDeudaLibro(diasAlquilado);
+    }
 }

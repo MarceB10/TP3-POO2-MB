@@ -19,7 +19,7 @@ public class Main {
         var ps = new Concursos(p1, p2, p3);
 
         var conNombre = ps.concursoConNombre("Y");
-        var empiezanEn = ps.concursosInicianEn(LocalDate.of(2024, 7, 22));
+        var empiezanEn = ps.concursosInicianEn(concurso1 -> concurso1.empiezaEn(LocalDate.of(2024, 7, 22)));
 
         for (Concurso c : conNombre) {
             System.out.println(c);

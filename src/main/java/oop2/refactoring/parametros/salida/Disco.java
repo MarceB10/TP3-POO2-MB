@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 class Disco {
     private String pathBase;
@@ -44,14 +45,14 @@ class Disco {
 //        return String.join(" ", lineas);
 //    }
 
-//    public Optional<String> contenido3(String nombre) throws IOException {
-//        Objects.nonNull(nombre);
-//        Path path = Paths.get(nombre);
-//        if (!Files.exists(path))
-//            return Optional.empty();
-//        List<String> lineas = Files.readAllLines(path);
-//        return Optional.of(String.join(" ", lineas));
-//    }
+    public Optional<String> contenido3(String nombre) throws IOException {
+        Objects.nonNull(nombre);
+        Path path = Paths.get(nombre);
+        if (!Files.exists(path))
+            return Optional.empty();
+        List<String> lineas = Files.readAllLines(path);
+        return Optional.of(String.join(" ", lineas));
+    }
 
     //¿ y que pasa con las listas? uso Optional aca?
 //    public List<String> archivos() {

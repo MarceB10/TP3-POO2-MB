@@ -15,14 +15,11 @@ public class Filtro {
         List<Persona> resultado = new ArrayList<>();
         for (Persona persona : p) {
             // no aplica tell dont ask
-            if (comienzaConE(persona)) {
+            if (persona.empezasCon("E")) {
                 resultado.add(persona);
             }
         }
         return resultado;
     }
 
-    private boolean comienzaConE(Persona persona) {
-        return persona.nombre().startsWith("E");
-    }
 }

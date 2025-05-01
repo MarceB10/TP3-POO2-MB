@@ -1,9 +1,9 @@
 package oop2.tp3.ejercicio1;
 
-public class Libro {
-    public static final int INFANTILES = 2;
-    public static final int REGULARES = 0;
-    public static final int NUEVO_LANZAMIENTO = 1;
+public abstract class Libro {
+    static final int INFANTILES = 2;
+    static final int REGULARES = 0;
+    static final int NUEVO_LANZAMIENTO = 1;
     private String nombre;
     private int codigoPrecio;
 
@@ -19,4 +19,13 @@ public class Libro {
     public String nombre() {
         return nombre;
     }
+
+    public abstract Double calcularDeudaLibro(int diasAlquilados);
+
+    public abstract int calcularPuntos();
+
+    public boolean soyNuevoLanzamiento() {
+        return this.codigoPrecio == NUEVO_LANZAMIENTO;
+    }
+
 }

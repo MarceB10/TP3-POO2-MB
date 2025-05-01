@@ -3,6 +3,7 @@ package oop2.refactoring.automatizados.funcionalparameter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class Concursos {
 
@@ -16,10 +17,10 @@ public class Concursos {
     //Rename method para generalizarlo
     //remuevo concursoConNombre
     //cambio el Main para usar el método genérico
-    public List<Concurso> concursosInicianEn(LocalDate fechaInicio) {
+    public List<Concurso> concursosInicianEn(Predicate<Concurso> predicate) {
         List<Concurso> resultado = new ArrayList<>();
         for (Concurso concurso : this.concursos) {
-            if (concurso.empiezaEn(fechaInicio)) {
+            if (predicate.test(concurso)) {
                 resultado.add(concurso);
             }
         }

@@ -1,88 +1,94 @@
 package oop2.tp3.ejercicio2;
 
-import com.opencsv.CSVReader;
-
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Recaudacion {
-    public static List<Map<String, String>> where(Map<String, String> options)
-            throws IOException {
-        List<String[]> csvData = new ArrayList<String[]>();
-        CSVReader reader = new CSVReader(new FileReader("src/main/resources/data.csv"));
-        String[] row = null;
 
-        while ((row = reader.readNext()) != null) {
-            csvData.add(row);
-        }
+    static final String COMPANY_NAME = "company_name";
+    static final String CITY = "city";
+    static final String STATE = "state";
+    static final String ROUND = "round";
+    static final String PERMALINK = "permalink";
+    static final String NUMBER_EMPLOYEES = "number_employees";
+    static final String CATEGORY = "category";
+    static final String FUNDED_DATE = "funded_date";
+    static final String RAISED_AMOUNT = "raised_amount";
+    static final String RAISED_CURRENCY = "raised_currency";
+    static final int INDICE_COMPANY_NAME = 1;
+    static final int INDICE_CITY = 4;
+    static final int INDICE_STATE = 5;
+    static final int INDICE_ROUND = 9;
+    private List<String[]> csvData;
+    private Map<String, String> filtrosDeBusqueda;
+    private Map<String, Integer> mapNombreIndice;
 
-        reader.close();
-        csvData.remove(0);
 
-        if (options.containsKey("company_name")) {
-            List<String[]> results = new ArrayList<String[]>();
+    public Recaudacion(FuenteDeDatos fuenteDeDatos){
+        this.csvData = fuenteDeDatos.toList();
+        this.mapNombreIndice = Map.of(COMPANY_NAME, INDICE_COMPANY_NAME,
+                CITY,INDICE_CITY,
+                STATE, INDICE_CITY,
+                ROUND, INDICE_ROUND);
+    }
 
-            for (int i = 0; i < csvData.size(); i++) {
-                if (csvData.get(i)[1].equals(options.get("company_name"))) {
-                    results.add(csvData.get(i));
-                }
-            }
+    public List<Map<String, String>> where(Map<String, String> filtrosDeBusquedas) throws IOException {
+        //method Object
+        inicializarFiltros(filtrosDeBusquedas);
+
+        for (String nombreColumna : this.filtrosDeBusqueda.keySet()) {
+            List<String[]> results = csvData.stream().filter(csvDatum -> csvDatum[this.mapNombreIndice.get(filtrosDeBusquedas.get(this.mapNombreIndice.get(nombreColumna)))]
+                    .equals(filtrosDeBusqueda.get(nombreColumna))).collect(Collectors.toList());
+
             csvData = results;
         }
 
-        if (options.containsKey("city")) {
-            List<String[]> results = new ArrayList<String[]>();
+        filtrarPor(COMPANY_NAME);
+        filtrarPor(CITY);
+        filtrarPor(STATE);
+        filtrarPor(ROUND);
+        return crearResultado();
+    }
 
-            for (int i = 0; i < csvData.size(); i++) {
-                if (csvData.get(i)[4].equals(options.get("city"))) {
-                    results.add(csvData.get(i));
-                }
-            }
-            csvData = results;
-        }
+    private void inicializarFiltros(Map<String, String> options) {
+        this.filtrosDeBusqueda = options;
+    }
 
-        if (options.containsKey("state")) {
-            List<String[]> results = new ArrayList<String[]>();
-
-            for (int i = 0; i < csvData.size(); i++) {
-                if (csvData.get(i)[5].equals(options.get("state"))) {
-                    results.add(csvData.get(i));
-                }
-            }
-            csvData = results;
-        }
-
-        if (options.containsKey("round")) {
-            List<String[]> results = new ArrayList<String[]>();
-
-            for (int i = 0; i < csvData.size(); i++) {
-                if (csvData.get(i)[9].equals(options.get("round"))) {
-                    results.add(csvData.get(i));
-                }
-            }
-            csvData = results;
-        }
-
+    private List<Map<String, String>> crearResultado() {
         List<Map<String, String>> output = new ArrayList<Map<String, String>>();
 
-        for (int i = 0; i < csvData.size(); i++) {
+        for (String[] csvDatum : csvData) {
             Map<String, String> mapped = new HashMap<String, String>();
-            mapped.put("permalink", csvData.get(i)[0]);
-            mapped.put("company_name", csvData.get(i)[1]);
-            mapped.put("number_employees", csvData.get(i)[2]);
-            mapped.put("category", csvData.get(i)[3]);
-            mapped.put("city", csvData.get(i)[4]);
-            mapped.put("state", csvData.get(i)[5]);
-            mapped.put("funded_date", csvData.get(i)[6]);
-            mapped.put("raised_amount", csvData.get(i)[7]);
-            mapped.put("raised_currency", csvData.get(i)[8]);
-            mapped.put("round", csvData.get(i)[9]);
+            mapped.put(PERMALINK, csvDatum[0]);
+            mapped.put(COMPANY_NAME, csvDatum[1]);
+            mapped.put(NUMBER_EMPLOYEES, csvDatum[2]);
+            mapped.put(CATEGORY, csvDatum[3]);
+            mapped.put(CITY, csvDatum[4]);
+            mapped.put(STATE, csvDatum[5]);
+            mapped.put(FUNDED_DATE, csvDatum[6]);
+            mapped.put(RAISED_AMOUNT, csvDatum[7]);
+            mapped.put(RAISED_CURRENCY, csvDatum[8]);
+            mapped.put(ROUND, csvDatum[9]);
             output.add(mapped);
         }
         return output;
+    }
+
+    private void filtrarPor(String nombreColumna) {
+        if (filtrosDeBusqueda.containsKey(nombreColumna)) {
+            List<String[]> results = new ArrayList<>();
+            for (String[] csvDatum : csvData) {
+                if (csvDatum[this.mapNombreIndice.get(nombreColumna)]
+                        .equals(filtrosDeBusqueda.get(nombreColumna))) {
+                    results.add(csvDatum);
+                }
+            }
+
+            csvData = results;
+        }
     }
 }

@@ -6,45 +6,32 @@ import java.util.List;
 public class Cliente {
     private List<Alquiler> alquileres = new ArrayList<Alquiler>();
     private String name;
+    private int puntosObtenidos;
 
     public Cliente(String nombre) {
         this.name = nombre;
+        this.puntosObtenidos = 0;
     }
 
-    public Object[] calcularDeudaYPuntosObtenidos() {
-        Object[] resultado = new Object[2];
+    public Double calcularDeudaAlquileres() {
         double total = 0;
         int puntosAlquilerFrecuente = 0;
+
         for (Alquiler alquiler : alquileres) {
             double monto = 0;
-// determine amounts for each line
-            switch (alquiler.copia().libro().codigoPrecio()) {
-                case Libro.REGULARES:
-                    monto += 2;
-                    if (alquiler.diasAlquilados() > 2)
-                        monto += (alquiler.diasAlquilados() - 2) * 1.5;
-                    break;
-                case Libro.NUEVO_LANZAMIENTO:
-                    monto += alquiler.diasAlquilados() * 3;
-                    break;
-                case Libro.INFANTILES:
-                    monto += 1.5;
-                    if (alquiler.diasAlquilados() > 3)
-                        monto += (alquiler.diasAlquilados() - 3) * 1.5;
-                    break;
-            }
-            total += monto;
+            total += alquiler.deudaAlquilerLibro();
             // sumo puntos por alquiler
             puntosAlquilerFrecuente++;
             // bonus por dos días de alquiler de un nuevo lanzamiento
-            if ((alquiler.copia().libro().codigoPrecio() == Libro.NUEVO_LANZAMIENTO)
-                    && alquiler.diasAlquilados() > 1) {
-                puntosAlquilerFrecuente++;
-            }
+            puntosAlquilerFrecuente += alquiler.bonusAlquilerNuevoLanzamiento();
         }
-        resultado[0] = total;
-        resultado[1] = puntosAlquilerFrecuente;
-        return resultado;
+
+        this.puntosObtenidos = puntosAlquilerFrecuente;
+        return total;
+    }
+
+    public int puntosObtenidos(){
+        return puntosObtenidos;
     }
 
     public void alquilar(Alquiler rental) {

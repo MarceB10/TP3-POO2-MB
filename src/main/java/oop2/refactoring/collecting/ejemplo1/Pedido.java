@@ -1,5 +1,6 @@
 package oop2.refactoring.collecting.ejemplo1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pedido {
@@ -29,4 +30,14 @@ public class Pedido {
         }
         return total;
     }
+
+    private ArrayList<Object> bebidas(){
+        var bebidas = new ArrayList<>();
+        for (ItemMenu itemMenu : items) {
+            itemMenu.agregarBebida(bebidas);
+        }
+        return bebidas;
+    }
+
+
 }

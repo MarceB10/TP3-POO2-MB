@@ -1,5 +1,7 @@
 package oop2.refactoring.collecting.ejemplo1;
 
+import java.util.ArrayList;
+
 public abstract class ItemMenu {
 
     private float precio;
@@ -12,5 +14,9 @@ public abstract class ItemMenu {
 
     public float precio() {
         return this.precio;
+    }
+
+    public void agregarBebida(ArrayList<Object> bebidas) {
+
     }
 }
