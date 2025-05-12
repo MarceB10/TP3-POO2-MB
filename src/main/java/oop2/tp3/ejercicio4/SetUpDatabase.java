@@ -4,6 +4,7 @@ import org.jdbi.v3.core.Jdbi;
 
 public class SetUpDatabase {
 
+    public static final String INSERTAR_PERSONA = "INSERT INTO persona (nombre, apellido) VALUES (?, ?)";
     private Jdbi jdbi;
 
     public SetUpDatabase(Jdbi jdbi) {
@@ -19,13 +20,13 @@ public class SetUpDatabase {
                     + "primary key generated always as identity (start with 1,increment by 1), "
                     + "nombre VARCHAR(255), apellido VARCHAR(255))");
 
-            handle.createUpdate("INSERT INTO persona (nombre, apellido) VALUES (?, ?)")
+            handle.createUpdate(INSERTAR_PERSONA)
                     .bind(0, "José").bind(1, "Laurenti").execute();
 
-            handle.createUpdate("INSERT INTO persona (nombre, apellido) VALUES (?, ?)")
+            handle.createUpdate(INSERTAR_PERSONA)
                     .bind(0, "Esteban").bind(1, "Otermon").execute();
 
-            handle.createUpdate("INSERT INTO persona (nombre, apellido) VALUES (?, ?)")
+            handle.createUpdate(INSERTAR_PERSONA)
                     .bind(0, "Vladimir").bind(1, "Varkov").execute();
 
         });

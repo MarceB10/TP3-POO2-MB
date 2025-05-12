@@ -5,6 +5,7 @@ import org.jdbi.v3.core.Jdbi;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class PersonaRepository {
 
@@ -17,7 +18,7 @@ public class PersonaRepository {
     /**
      * Busca por nombre a parte
      */
-    public List<Persona> buscarPorNombre(String nombreOParte) {
+    public Optional< List<Persona> > buscarPorNombre(String nombreOParte) {
         return jdbi.withHandle(handle -> {
             var rs = handle
                     .select("select nombre, apellido from persona where nombre like ?")
@@ -26,16 +27,15 @@ public class PersonaRepository {
             var personas = new ArrayList<Persona>();
 
             if (rs.size() == 0) {
-                return null;
+                return Optional.empty();
             }
 
             for (Map<String, String> map : rs) {
                 personas.add(new Persona(map.get("nombre"), map.get("apellido")));
             }
 
-            return personas;
+            return Optional.of(personas);
         });
-
     }
 
 
@@ -44,7 +44,7 @@ public class PersonaRepository {
      * - null si el id no se encuentra en la BD
      * - la instancia de Persona encontrada
      */
-    public Persona buscarId(Long id) {
+    public Optional<Persona> buscarId(Long id) {
         return jdbi.withHandle(handle -> {
 
             var rs = handle
@@ -52,10 +52,10 @@ public class PersonaRepository {
                     .bind(0, id).mapToMap(String.class).list();
 
             if (rs.size() == 0) {
-                return null;
+                return Optional.empty();
             }
 
-            return new Persona(rs.get(0).get("nombre"), rs.get(0).get("apellido"));
+            return Optional.of(new Persona(rs.get(0).get("nombre"), rs.get(0).get("apellido")));
 
         });
     }

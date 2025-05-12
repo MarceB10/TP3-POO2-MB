@@ -11,17 +11,18 @@ public class Main {
         new SetUpDatabase(jdbi).setUp();
 
         var repo = new PersonaRepository(jdbi);
-        var personas = repo.buscarPorNombre("Vla");
+//        var personas = repo.buscarPorNombre("Vla");
+        var personas = repo.buscarPorNombre("V");
+//
+//        for (Persona persona : personas) {
+//            persona.toString();
+//        }
 
-        if (personas != null) {
-            for (Persona persona : personas) {
-                System.out.println(persona.nombre() + " " + persona.apellido());
-            }
-        }
+        personas.ifPresent(personas1 -> System.out.println(personas1.toString()));
 
-        var persona = repo.buscarId(1L);
-        if (persona != null) {
-            System.out.println(persona.nombre() + " " + persona.apellido());
-        }
+        var optionalPersona = repo.buscarId(1L);
+        optionalPersona.ifPresent(
+                persona -> System.out.println(persona.toString()));
+
     }
 }

@@ -42,5 +42,12 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.11</version> <!-- O podés usar la versión más reciente -->
+        </dependency>
+
     </dependencies>
 </project>
